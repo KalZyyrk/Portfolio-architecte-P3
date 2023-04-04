@@ -10,6 +10,11 @@ const supp = (parent) => {
     }
 }
 
+const setActiveButton = (nodeList, button) => {
+    Array.from(nodeList).map(filter => filter.classList.remove('active'))
+    button.classList.add('active')
+}
+
 const displayWorks = (works) => {
     for (const work of works) {
         let display = '';
@@ -25,7 +30,7 @@ const displayWorks = (works) => {
 }
 
 const displayCatergories = () => {
-    eltCategories.insertAdjacentHTML('beforeend', "<button class='categories' value='0'>Tous</button>");
+    eltCategories.insertAdjacentHTML('beforeend', "<button class='categories active' value='0'>Tous</button>");
     for (const category of categories) {
         let display = '';
         display += `
@@ -42,12 +47,13 @@ const addListener = () => {
     for (const filter of filters) {
         filter.addEventListener('click', () => {
             if (filter.value != 0) {
+                setActiveButton(filters, filter)
                 supp(eltGallery)
                 let filteredWorks = worksAPI.filter(work => work.categoryId == filter.value)
-                console.log(filteredWorks);
                 displayWorks(filteredWorks)
             } else {
-                supp(eltGallery)
+                setActiveButton(filters, filter)
+                supp(eltGallery)                
                 displayWorks(worksAPI)
             }
         })
